@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<!-- بداية قسم: تعريف المستند و إعدادات الصفحة الأساسية -->
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URI</title> 
+    <!-- استيراد Tailwind CSS للتصميم -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- استيراد Font Awesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0eK4S+28T39t9L7h0wD5v6XlD8wP1yGj3P1W0eF3/aJ9+B+A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- إعدادات Tailwind: تعريف الألوان المخصصة -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class', 
+            theme: {
+                extend: {
+                    colors: {
+                        // لون العلامة التجارية الرئيسي
+                        'primary-theme': '#069e8b', 
+                        'theme-dark': '#05796b', 
+                        'secondary-gray': 'rgb(243, 244, 246)', 
+                        'gemini-purple': 'rgb(139, 92, 246)', 
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- الأنماط المخصصة (Custom CSS) -->
+    <style>
+        html { scroll-behavior: smooth; }
+        /* تأكيد اتجاه النص من اليسار لليمين */
+        .ltr-override { direction: ltr; text-align: left; }
+
+        /* تصميم زر الملخص بالذكاء الاصطناعي */
+        .gemini-btn {
+            background-color: rgb(139, 92, 246); 
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.5), 0 2px 4px -2px rgba(139, 92, 246, 0.5); 
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+        .gemini-btn:hover {
+            background-color: rgb(124, 58, 237);
+            transform: scale(1.05);
+        }
+        /* تصميم حلقة التحميل */
+        .loading-ring {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid rgb(255, 255, 255);
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* تصميم بطاقة المقال/الرابط */
+        .card-link {
+            border-radius: 0.75rem; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .dark .card-link {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<!-- نهاية قسم: تعريف المستند و إعدادات الصفحة الأساسية -->
+
+
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300 font-sans text-gray-900 dark:text-gray-100">
+
+    <!-- بداية قسم: شريط التنقل (NAVIGATION BAR) -->
+    <header class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50 transition-colors duration-300">
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+            
+            <!-- الشعار ورابط الصفحة الرئيسية -->
+            <button onclick="showPage('home')" class="flex items-center space-x-2 focus:outline-none">
+                <img src="\image\URI LOGO.jpg" alt="URI Logo" class="h-8 w-8 rounded-md object-cover shadow-md">
+                <h1 class="text-2xl font-bold text-primary-theme dark:text-white">URI</h1>
+            </button>
+
+            <!-- روابط التنقل وتبديل الوضع المظلم -->
+            <div class="flex items-center space-x-4">
+                <!-- الروابط -->
+                <button onclick="showPage('home')" id="nav-home" class="nav-button p-2 text-primary-theme dark:text-white font-semibold border-b-2 border-primary-theme dark:border-white transition duration-300 hover:text-theme-dark dark:hover:text-gray-300">Home</button>
+                <button onclick="showPage('posters')" id="nav-posters" class="nav-button p-2 text-gray-600 dark:text-gray-300 font-medium transition duration-300 hover:text-primary-theme dark:hover:text-primary-theme">Posters</button>
+                <button onclick="showPage('videos')" id="nav-videos" class="nav-button p-2 text-gray-600 dark:text-gray-300 font-medium transition duration-300 hover:text-primary-theme dark:hover:text-primary-theme">Videos</button>
+                
+                <!-- زر تبديل الوضع المظلم -->
+                <button id="theme-toggle" onclick="toggleDarkMode()" class="p-2 ml-2 rounded-full text-gray-600 dark:text-yellow-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-300">
+                    <i class="fas fa-moon h-5 w-5" id="moon-icon"></i>
+                    <i class="fas fa-sun h-5 w-5 hidden" id="sun-icon"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <!-- نهاية قسم: شريط التنقل (NAVIGATION BAR) -->
+
+    <!-- بداية قسم: النافذة المنبثقة للرسائل وملخصات الذكاء الاصطناعي (Modal) -->
+    <div id="modal-message" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-[100] items-center justify-center p-4" onclick="this.classList.add('hidden');">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-2xl max-w-lg w-full transform transition-all scale-100" onclick="event.stopPropagation()">
+            <h3 id="modal-title" class="text-xl font-bold text-gemini-purple mb-4"></h3>
+            <!-- المحتوى يكون باتجاه LTR -->
+            <div id="modal-content" class="text-gray-700 dark:text-gray-200 max-h-96 overflow-y-auto leading-relaxed ltr-override"></div>
+            <button id="modal-close-btn" onclick="document.getElementById('modal-message').classList.add('hidden')" class="mt-6 bg-primary-theme text-white py-2 px-4 rounded-lg hover:bg-theme-dark transition">Close</button>
+        </div>
+    </div>
+    <!-- نهاية قسم: النافذة المنبثقة -->
+
+
+    <!-- بداية قسم: محتوى الصفحة الرئيسية (HOME PAGE CONTENT) -->
+    <main id="home-page" class="page-content container mx-auto p-6 md:p-12 min-h-screen">
+        <h2 class="text-4xl font-extrabold mb-8 border-b-4 border-primary-theme pb-2 inline-block">Scientific Journal Research Hub</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-400 mb-12">Our scientific journal unit is dedicated to summarizing cutting-edge research papers,creating awareness about scientific breakthroughs,and producing educational posters and videos.</p>
+
+        <!-- شبكة المقالات المميزة (Grid) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            
+            <!-- بطاقة 1 -->
+            <div onclick="scrollToArticle('article1')" class="card-link bg-white dark:bg-gray-800 p-6 border border-gray-100 dark:border-gray-700 cursor-pointer transform hover:shadow-xl hover:scale-[1.01]">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="p-3 rounded-lg text-white" style="background-color: rgb(13, 148, 136);">
+                      <img src="\image\3434572.png" alt="3434572.png" class="h-5 w-5">
+                    </div>
+                    <span class="text-xs font-semibold px-3 py-1 bg-gray-100 dark:bg-gray-700" style="color: rgb(13, 148, 136);">Biotechnology</span>
+                </div>
+                <h4 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">CRISPR-Cas9 Gene Editing in Cancer Therapy: Recent Breakthroughs</h4>
+                <p id="card1-summary" class="text-gray-600 dark:text-gray-400 text-sm mb-4 ">A comprehensive analysis of recent advances in using CRISPR technology for targeted cancer treatment, including clinical trial results and future applications.</p>
+                <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex justify-end items-center text-sm text-primary-theme dark:text-primary-theme/80">
+                    <span class="flex items-center space-x-1">
+                        <span>Read More</span>
+                        <i class="fas fa-arrow-right ml-1"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- بطاقة 2 -->
+            <div onclick="scrollToArticle('article2')" class="card-link bg-white dark:bg-gray-800 p-6 border border-gray-100 dark:border-gray-700 cursor-pointer transform hover:shadow-xl hover:scale-[1.01]">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="p-3 rounded-lg text-white" style="background-color: rgb(67, 20, 207);">
+                      <img src="\image\brain.png" alt="brain.png" class="h-5 w-5">
+                    </div>
+                    <span class="text-xs font-semibold px-3 py-1 bg-gray-100 dark:bg-gray-700" style="color: rgb(67, 20, 207);">Quantum Physics</span>
+                </div>
+                <h4 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Quantum Computing Applications in Drug Discovery</h4>
+                <p id="card2-summary" class="text-gray-600 dark:text-gray-400 text-sm mb-4 ">Exploring how quantum algorithms are revolutionizing molecular simulation and accelerating the development of new pharmaceutical compounds.</p>
+                <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex justify-end items-center text-sm text-primary-theme dark:text-primary-theme/80">
+                    <span class="flex items-center space-x-1">
+                        <span>Read More</span>
+                        <i class="fas fa-arrow-right ml-1"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- بطاقة 3 -->
+            <div onclick="scrollToArticle('article3')" class="card-link bg-white dark:bg-gray-800 p-6 border border-gray-100 dark:border-gray-700 cursor-pointer transform hover:shadow-xl hover:scale-[1.01]">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="p-3 rounded-lg text-white" style="background-color: rgb(21, 128, 61);">
+                      <img src="\image\Book.png" alt="Book.png" class="h-5 w-5">
+                    </div>
+                    <span class="text-xs font-semibold px-3 py-1 bg-gray-100 dark:bg-gray-700" style="color: rgb(21, 128, 61);">Environmental Science</span>
+                </div>
+                <h4 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Climate Change Impact on Marine Biodiversity</h4>
+                <p id="card3-summary" class="text-gray-600 dark:text-gray-400 text-sm mb-4 ">Latest research on how rising ocean temperatures and acidification are affecting marine ecosystems and species distribution patterns.</p>
+                <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex justify-end items-center text-sm text-primary-theme dark:text-primary-theme/80">
+                    <span class="flex items-center space-x-1">
+                        <span>Read More</span>
+                        <i class="fas fa-arrow-right ml-1"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+              <h3 class="text-3xl font-extrabold mb-8 border-b-2 border-primary-theme pb-2 inline-block ">Featured Research</h3>
+              <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">Discover the latest scientific breakthroughs and research summaries curated by our expert team of researchers and scientists.</p>
+
+
+        <!-- مقال 1: المستقبل الرقمي -->
+        <article id="article1" class="mb-16 p-8 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <div class="flex items-center mb-4 space-x-3">
+                <div class="p-3 rounded-lg text-white" style="background-color: rgb(13, 148, 136);">
+                    <img src="\image\3434572.png" alt="3434572.png" class="h-5 w-5">
+                </div>
+                <span class="text-sm font-semibold px-3 py-1 bg-gray-100 dark:bg-gray-700" style="color: rgb(13, 148, 136);">Biotechnology</span>
+            </div>
+
+            <div class="flex justify-between items-start mb-4">
+                <h3 id="article1-full-title" class="text-3xl font-bold text-primary-theme">The Digital Future and AI Breakthroughs</h3>
+                <!-- زر تلخيص المقال باستخدام الذكاء الاصطناعي -->
+                <button onclick="summarizeArticle('article1')" id="article1-summarize-btn" class="gemini-btn flex items-center gap-2">
+                    <span id="loader-article1" class="hidden loading-ring"></span>
+                    <span>Summarize Article ✨</span>
+                </button>
+            </div>
+            
+            <!-- محتوى المقال (مصدر لنموذج اللغة) -->
+            <p id="content-article1" class="leading-relaxed text-lg text-gray-700 dark:text-gray-300">The world is witnessing an unprecedented shift towards comprehensive digitalization, where Artificial Intelligence has become not just a supporting tool, but a fundamental partner in decision-making and solving complex problems. This transformation is expected to accelerate in the coming years, reshaping the global job market and economy. Investing in digital infrastructure and skills related to data and machine learning is the key to success in this new era. <br><br> The integration of AI into daily life, from personalized recommendations to complex industrial automation, highlights a future where human-machine collaboration is essential. Ethical considerations and responsible development of these technologies must accompany this rapid growth to ensure equitable access and prevent unintended societal consequences.</p>
+
+            <!-- قسم البيانات الوصفية للمقال -->
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center text-gray-500 dark:text-gray-400 text-sm">
+                <div class="flex items-center space-x-4">
+                    <span class="flex items-center space-x-1">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Dr. Jane Doe</span>
+                    </span>
+                    <span class="flex items-center space-x-1">
+                        <i class="fas fa-clock"></i>
+                        <span>8 min read</span>
+                    </span>
+                </div>
+                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="text-primary-theme hover:text-theme-dark dark:text-primary-theme/80 dark:hover:text-primary-theme hover:underline flex items-center space-x-1">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Back to Top</span>
+                </button>
+            </div>
+        </article>
+
+        <!-- مقال 2: الطاقة المتجددة -->
+        <article id="article2" class="mb-16 p-8 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <div class="flex items-center mb-4 space-x-3">
+                <div class="p-3 rounded-lg text-white" style="background-color: rgb(67, 20, 207);">
+                    <img src="\image\brain.png" alt="brain.png" class="h-5 w-5">
+                </div>
+                <span class="text-sm font-semibold px-3 py-1 bg-gray-100 dark:bg-gray-700" style="color: rgb(67, 20, 207);">Quantum Physics</span>
+            </div>
+
+             <div class="flex justify-between items-start mb-4">
+                <h3 id="article2-full-title" class="text-3xl font-bold text-primary-theme">Renewable Energy Revolution and Sustainability</h3>
+                <!-- زر تلخيص المقال باستخدام الذكاء الاصطناعي -->
+                <button onclick="summarizeArticle('article2')" id="article2-summarize-btn" class="gemini-btn flex items-center gap-2">
+                    <span id="loader-article2" class="hidden loading-ring"></span>
+                    <span>Summarize Article ✨</span>
+                </button>
+            </div>
+            <p id="content-article2" class="leading-relaxed text-lg text-gray-700 dark:text-gray-300">Renewable energy sources, such as solar, wind, and hydropower, are the essential foundation for a sustainable and environmentally friendly future. The transition to clean energy is no longer an option but a pressing necessity to combat climate change and ensure energy security for future generations. Governments and companies worldwide are striving to accelerate the adoption of these technologies to reduce reliance on fossil fuels. <br><br> Innovation in battery storage and grid efficiency is key to overcoming the intermittency challenge associated with solar and wind power. Global cooperation on energy policy and technology transfer remains crucial for making a genuine impact on environmental protection.</p>
+            
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center text-gray-500 dark:text-gray-400 text-sm">
+                <div class="flex items-center space-x-4">
+                    <span class="flex items-center space-x-1">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Prof. Michael Rodriguez</span>
+                    </span>
+                    <span class="flex items-center space-x-1">
+                        <i class="fas fa-clock"></i>
+                        <span>12 min read</span>
+                    </span>
+                </div>
+                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="text-primary-theme hover:text-theme-dark dark:text-primary-theme/80 dark:hover:text-primary-theme hover:underline flex items-center space-x-1">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Back to Top</span>
+                </button>
+            </div>
+        </article>
+
+        <!-- مقال 3: مبادئ التصميم -->
+        <article id="article3" class="mb-16 p-8 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <div class="flex items-center mb-4 space-x-3">
+                <div class="p-3 rounded-lg text-white" style="background-color: rgb(21, 128, 61);">
+                    <img src="\image\Book.png" alt="Book.png" class="h-5 w-5">
+                </div>
+                <span class="text-sm font-semibold px-3 py-1 bg-gray-100 dark:bg-gray-700" style="color: rgb(21, 128, 61);">Environmental Science</span>
+            </div>
+
+            <div class="flex justify-between items-start mb-4">
+                <h3 id="article3-full-title" class="text-3xl font-bold text-primary-theme">Principles of Design Creativity and UX</h3>
+                <!-- زر تلخيص المقال باستخدام الذكاء الاصطناعي -->
+                <button onclick="summarizeArticle('article3')" id="article3-summarize-btn" class="gemini-btn flex items-center gap-2">
+                    <span id="loader-article3" class="hidden loading-ring"></span>
+                    <span>Summarize Article ✨</span>
+                </button>
+            </div>
+            <p id="content-article3" class="leading-relaxed text-lg text-gray-700 dark:text-gray-300">Effective creative design revolves around meeting user needs and expectations. User Experience (UX) is not just about aesthetics; it is an integrated journey aimed at making interaction easy, enjoyable, and beneficial. Adherence to the principles of simplicity, clarity, and consistency is what distinguishes successful digital products in today's competitive market. <br><br> Empathy mapping and user testing are fundamental steps in the design process, ensuring that the final product truly solves the user's problem. A great user interface (UI) combined with smooth UX creates memorable digital experiences that foster loyalty.</p>
+            
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center text-gray-500 dark:text-gray-400 text-sm">
+                <div class="flex items-center space-x-4">
+                    <span class="flex items-center space-x-1">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Dr. Enima Thompson</span>
+                    </span>
+                    <span class="flex items-center space-x-1">
+                        <i class="fas fa-clock"></i>
+                        <span>10 min read</span>
+                    </span>
+                </div>
+                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="text-primary-theme hover:text-theme-dark dark:text-primary-theme/80 dark:hover:text-primary-theme hover:underline flex items-center space-x-1">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Back to Top</span>
+                </button>
+            </div>
+        </article>
+
+    </main>
+    <!-- نهاية قسم: محتوى الصفحة الرئيسية (HOME PAGE CONTENT) -->
+
+    <!-- بداية قسم: محتوى صفحة الملصقات (POSTERS PAGE CONTENT) -->
+    <div id="posters-page" class="page-content container mx-auto p-6 md:p-12 min-h-screen hidden">
+        <h2 class="text-4xl font-extrabold mb-8 border-b-4 border-primary-theme pb-2 inline-block">Featured Posters Archive</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">Browse a collection of attractive poster designs on various topics.</p>
+
+        <!-- شبكة الملصقات (محتوى وهمي) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- ملصق 1 -->
+            <div class="bg-secondary-gray dark:bg-gray-700 rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300">
+                <img src="https://placehold.co/600x800/069e8b/ffffff?text=Poster+1\nModern+Design" alt="Poster 1" class="w-full h-80 object-cover">
+                <div class="p-4">
+                    <h4 class="text-xl font-bold text-primary-theme">Minimalist Design</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Best practices for typography and composition.</p>
+                </div>
+            </div>
+            <!-- ملصق 2 -->
+            <div class="bg-secondary-gray dark:bg-gray-700 rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300">
+                <img src="https://placehold.co/600x800/069e8b/ffffff?text=Poster+2\nNature+Journey" alt="Poster 2" class="w-full h-80 object-cover">
+                <div class="p-4">
+                    <h4 class="text-xl font-bold text-primary-theme">Travel Poster</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Exploring colors and lighting.</p>
+                </div>
+            </div>
+            <!-- ملصق 3 -->
+            <div class="bg-secondary-gray dark:bg-gray-700 rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300">
+                <img src="https://placehold.co/600x800/069e8b/ffffff?text=Poster+3\nConference+2024" alt="Poster 3" class="w-full h-80 object-cover">
+                <div class="p-4">
+                    <h4 class="text-xl font-bold text-primary-theme">Conference Announcement</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Professional graphic design.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- نهاية قسم: محتوى صفحة الملصقات (POSTERS PAGE CONTENT) -->
+
+    <!-- بداية قسم: محتوى صفحة الفيديوهات (VIDEOS PAGE CONTENT) -->
+    <div id="videos-page" class="page-content container mx-auto p-6 md:p-12 min-h-screen hidden">
+        <h2 class="text-4xl font-extrabold mb-8 border-b-4 border-primary-theme pb-2 inline-block">Video Library</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">Watch the latest educational and inspiring video clips.</p>
+
+        <!-- شبكة الفيديوهات (محتوى وهمي) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- فيديو 1 -->
+            <div class="bg-secondary-gray dark:bg-gray-800 rounded-xl shadow-xl p-4 transition-colors duration-300">
+                <div class="aspect-video bg-gray-700 rounded-lg flex items-center justify-center text-white text-2xl font-bold">
+                    [AI Video Placeholder]
+                </div>
+                <h4 class="text-xl font-bold text-primary-theme mt-4">AI Fundamentals Explained</h4>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">Video Length: 12:45 minutes</p>
+            </div>
+            <!-- فيديو 2 -->
+            <div class="bg-secondary-gray dark:bg-gray-800 rounded-xl shadow-xl p-4 transition-colors duration-300">
+                <div class="aspect-video bg-gray-700 rounded-lg flex items-center justify-center text-white text-2xl font-bold">
+                    [Graphic Design Video Placeholder]
+                </div>
+                <h4 class="text-xl font-bold text-primary-theme mt-4">Graphic Design Course for Beginners</h4>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">Video Length: 45:10 minutes</p>
+            </div>
+        </div>
+    </div>
+    <!-- نهاية قسم: محتوى صفحة الفيديوهات (VIDEOS PAGE CONTENT) -->
+
+    <!-- بداية قسم: التذييل (FOOTER) -->
+    <footer class="text-white p-6 mt-12 transition-colors duration-300" style="background-color: rgb(31, 41, 55);">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2025 All Rights Reserved by URI Platform.</p>
+        </div>
+    </footer>
+    <!-- نهاية قسم: التذييل (FOOTER) -->
+
+    <!-- بداية قسم: منطق JavaScript (الرئيسي) -->
+    <script>
+        // =========================================================
+        // الإعدادات والثوابت
+        // =========================================================
+        const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=';
+        const API_KEY = "AIzaSyAup9WftbNExYO0EEpaE_wkNvED7Rwkr64";
+        
+        // النصوص الثابتة المستخدمة في التطبيق
+        const MESSAGES = {
+            SUMMARIZING: 'Summarizing...',
+            SUMMARY_TITLE_PREFIX: '✨ Summary for ',
+            ERROR_CONTENT: 'Content Error',
+            ERROR_CONTENT_MSG: 'Could not find article content to summarize.',
+            ERROR_GENERATION: 'Generation Error',
+            ERROR_GENERATION_MSG: 'AI could not generate the summary.',
+            ERROR_OCCURRED: 'Error Occurred',
+            SUMMARIZE_BTN_TEXT: 'Summarize Article ✨',
+            // عناوين المقالات (للاستخدام في النافذة المنبثقة)
+            article1_title: 'The Digital Future and AI Breakthroughs',
+            article2_title: 'Renewable Energy Revolution and Sustainability',
+            article3_title: 'Principles of Design Creativity and UX',
+        };
+
+        /**
+         * دالة مساعدة لجلب النص من قاموس MESSAGES.
+         * تم تبسيطها لأن اللغة ثابتة (الإنجليزية).
+         */
+        function getMessage(key) {
+            return MESSAGES[key] || key;
+        }
+
+
+        // =========================================================
+        // وظائف التنقل وتحديث واجهة المستخدم
+        // =========================================================
+
+        /**
+         * تعرض الصفحة المطلوبة وتخفي جميع الصفحات الأخرى.
+         * وتحدث أنماط أزرار التنقل.
+         */
+        function showPage(pageId) {
+            // إخفاء جميع محتويات الصفحات
+            document.querySelectorAll('.page-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // إظهار المحتوى المطلوب والتمرير للأعلى
+            const activePage = document.getElementById(pageId + '-page');
+            if (activePage) {
+                activePage.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // تحديث أنماط زر التنقل النشط
+            const isDark = document.documentElement.classList.contains('dark');
+            document.querySelectorAll('.nav-button').forEach(button => {
+                // إعادة ضبط الأنماط
+                button.classList.remove('border-b-2', 'border-primary-theme', 'text-primary-theme', 'font-semibold', 'dark:border-white', 'dark:text-white');
+                button.classList.add('text-gray-600', 'dark:text-gray-300', 'font-medium');
+                
+                // تعيين الأنماط النشطة
+                if (button.getAttribute('onclick').includes(pageId)) {
+                    button.classList.add('border-b-2', 'font-semibold', 'text-primary-theme');
+                    button.classList.remove('text-gray-600', 'font-medium');
+                    if (isDark) {
+                         button.classList.add('dark:border-white', 'dark:text-white');
+                    } else {
+                         button.classList.add('border-primary-theme');
+                    }
+                }
+            });
+        }
+        
+        /**
+         * تقوم بالتمرير بسلاسة إلى عنصر مقال معين في الصفحة الرئيسية.
+         */
+        function scrollToArticle(articleId) {
+            showPage('home'); // التأكد من أن الصفحة الرئيسية معروضة
+            const articleElement = document.getElementById(articleId);
+            if (articleElement) {
+                const headerHeight = document.querySelector('header').offsetHeight || 70; 
+                const elementPosition = articleElement.getBoundingClientRect().top + window.pageYOffset;
+                const offsetPosition = elementPosition - headerHeight - 20; 
+                window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+            }
+        }
+        
+        /**
+         * تعرض رسالة مخصصة في النافذة المنبثقة.
+         */
+        function showModal(title, content) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-content').innerHTML = content;
+            document.getElementById('modal-message').classList.remove('hidden');
+        }
+
+
+        // =========================================================
+        // وظائف الذكاء الاصطناعي (Gemini API)
+        // =========================================================
+
+        /**
+         * تستدعي واجهة Gemini API لتلخيص محتوى مقال محدد.
+         */
+        async function summarizeArticle(articleId) {
+            const articleContentElement = document.getElementById(`content-${articleId}`);
+            const articleTitle = getMessage(`${articleId}_title`);
+            const articleText = articleContentElement ? articleContentElement.innerText : '';
+            
+            if (!articleText) {
+                showModal(getMessage('ERROR_CONTENT'), getMessage('ERROR_CONTENT_MSG'));
+                return;
+            }
+
+            const button = document.getElementById(`${articleId}-summarize-btn`);
+            const loader = document.getElementById(`loader-${articleId}`);
+
+            // تعيين حالة التحميل
+            button.disabled = true;
+            loader.classList.remove('hidden');
+            button.querySelector('span:last-child').innerText = getMessage('SUMMARIZING');
+
+            // بناء المطالبة (Prompt) باللغة الإنجليزية
+            const systemPrompt = "You are a precise and concise summary expert. Respond in English only.";
+            const userQuery = `Summarize this article in 3 very short and clear points or sentences in English. The article: "${articleText}"`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+            };
+
+            try {
+                const result = await fetchWithRetry(API_URL + API_KEY, payload);
+                const summaryText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (summaryText) {
+                    const formattedSummary = summaryText.replace(/\n/g, '<br>');
+                    showModal(getMessage('SUMMARY_TITLE_PREFIX') + articleTitle, formattedSummary);
+                } else {
+                    showModal(getMessage('ERROR_GENERATION'), getMessage('ERROR_GENERATION_MSG'));
+                }
+
+            } catch (error) {
+                console.error('Gemini API Error:', error);
+                showModal(getMessage('ERROR_OCCURRED'), `${getMessage('ERROR_OCCURRED')}: ${error.message}`);
+            } finally {
+                // إعادة ضبط حالة الزر
+                button.disabled = false;
+                loader.classList.add('hidden');
+                button.querySelector('span:last-child').innerText = getMessage('SUMMARIZE_BTN_TEXT');
+            }
+        }
+        
+        /**
+         * تجلب البيانات من واجهة برمجة تطبيقات Gemini مع محاولة إعادة المحاولة (Exponential Backoff).
+         */
+        async function fetchWithRetry(url, payload, maxRetries = 3) {
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    
+                    if (response.status === 429 || response.status >= 500) {
+                        if (i < maxRetries - 1) {
+                            const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            continue; // إعادة المحاولة
+                        }
+                    }
+                    
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(`API failed with status ${response.status}: ${errorData.error?.message || response.statusText}`);
+
+                } catch (error) {
+                    if (i === maxRetries - 1) {
+                         throw error;
+                    }
+                }
+            }
+        }
+
+        // =========================================================
+        // وظائف الوضع المظلم (Dark Mode)
+        // =========================================================
+
+        /**
+         * تبديل الوضع المظلم/الخفيف وحفظ التفضيل في التخزين المحلي.
+         */
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                document.getElementById('moon-icon').classList.remove('hidden');
+                document.getElementById('sun-icon').classList.add('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('moon-icon').classList.add('hidden');
+                document.getElementById('sun-icon').classList.remove('hidden');
+            }
+        }
+
+        /**
+         * تهيئة السمة عند تحميل الصفحة بناءً على التخزين المحلي أو تفضيلات النظام.
+         */
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('moon-icon').classList.add('hidden');
+                document.getElementById('sun-icon').classList.remove('hidden');
+            }
+        }
+
+
+        // =========================================================
+        // التهيئة عند التحميل
+        // =========================================================
+
+        window.onload = function() {
+            initializeTheme(); // تهيئة الوضع المظلم
+            showPage('home'); // عرض الصفحة الرئيسية افتراضياً
+        };
+    </script>
+    <!-- نهاية قسم: منطق JavaScript (الرئيسي) -->
+</body>
+</html>
