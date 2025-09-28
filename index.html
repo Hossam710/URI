@@ -84,8 +84,12 @@
 
     <!-- بداية قسم: شريط التنقل (NAVIGATION BAR) -->
     <header class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50 transition-colors duration-300">
-        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <!-- تم تقليل الهامش الجانبي إلى px-3 على الجوال -->
+      <nav class="container mx-auto px-3 sm:px-4 py-3">
             
+        <!-- الصف الرئيسي (الشعار، زر الهمبرغر، تبديل الوضع المظلم) -->
+            <div class="flex justify-between items-center">
+
             <!-- الشعار ورابط الصفحة الرئيسية -->
             <button onclick="showPage('home')" class="flex items-center space-x-2 focus:outline-none">
                 <img src="images\URI LOGO.jpg" alt="URI Logo" class="h-8 w-8 rounded-md object-cover shadow-md">
@@ -93,17 +97,34 @@
             </button>
 
             <!-- روابط التنقل وتبديل الوضع المظلم -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-3">
+
+
                 <!-- الروابط -->
-                <button onclick="showPage('home')" id="nav-home" class="nav-button p-2 text-primary-theme dark:text-white font-semibold border-b-2 border-primary-theme dark:border-white transition duration-300 hover:text-theme-dark dark:hover:text-gray-300">Home</button>
-                <button onclick="showPage('posters')" id="nav-posters" class="nav-button p-2 text-gray-600 dark:text-gray-300 font-medium transition duration-300 hover:text-primary-theme dark:hover:text-primary-theme">Posters</button>
-                <button onclick="showPage('videos')" id="nav-videos" class="nav-button p-2 text-gray-600 dark:text-gray-300 font-medium transition duration-300 hover:text-primary-theme dark:hover:text-primary-theme">Videos</button>
-                
-                <!-- زر تبديل الوضع المظلم -->
-                <button id="theme-toggle" onclick="toggleDarkMode()" class="p-2 ml-2 rounded-full text-gray-600 dark:text-yellow-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-300">
-                    <i class="fas fa-moon h-5 w-5" id="moon-icon"></i>
-                    <i class="fas fa-sun h-5 w-5 hidden" id="sun-icon"></i>
-                </button>
+                 <!-- روابط سطح المكتب (تظهر فقط من شاشات sm فما فوق) -->
+                    <!-- هذه الروابط مخفية على الجوال -->
+                    <div class="hidden sm:flex items-center space-x-3">
+                        <button onclick="showPage('home')" data-page="home" class="nav-button p-2 transition duration-300 hover:text-theme-dark dark:hover:text-gray-300">Home</button>
+                        <button onclick="showPage('posters')" data-page="posters" class="nav-button p-2 transition duration-300 hover:text-primary-theme dark:hover:text-primary-theme">Posters</button>
+                        <button onclick="showPage('videos')" data-page="videos" class="nav-button p-2 transition duration-300 hover:text-primary-theme dark:hover:text-primary-theme">Videos</button>
+                    </div>
+                     <!-- زر قائمة الهمبرغر (يظهر فقط على شاشات الجوال) -->
+                    <button id="menu-toggle-btn" onclick="toggleMenu()" class="sm:hidden p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-300">
+                        <i class="fas fa-bars h-5 w-5"></i>
+                    </button>
+                <!-- زر تبديل الوضع المظلم (يظهر في جميع الأوضاع) -->
+                    <button id="theme-toggle" onclick="toggleDarkMode()" class="p-2 ml-2 rounded-full text-gray-600 dark:text-yellow-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-300">
+                        <i class="fas fa-moon h-5 w-5" id="moon-icon"></i>
+                        <i class="fas fa-sun h-5 w-5 hidden" id="sun-icon"></i>
+                    </button>
+            </div>
+        </div>
+        <!-- القائمة المنسدلة للجوال (مخفية افتراضياً وتظهر عند النقر على الهمبرغر) -->
+            <div id="mobile-menu" class="hidden sm:hidden w-full pt-4 pb-2 mt-2 border-t border-gray-100 dark:border-gray-700">
+                <!-- الروابط الثلاثة مجمعة هنا -->
+                <button onclick="showPage('home'); toggleMenu();" data-page="home" class="mobile-nav-item w-full text-left p-2 rounded-md font-medium transition duration-300">Home</button>
+                <button onclick="showPage('posters'); toggleMenu();" data-page="posters" class="mobile-nav-item w-full text-left p-2 rounded-md font-medium transition duration-300">Posters</button>
+                <button onclick="showPage('videos'); toggleMenu();" data-page="videos" class="mobile-nav-item w-full text-left p-2 rounded-md font-medium transition duration-300">Videos</button>
             </div>
         </nav>
     </header>
@@ -411,6 +432,16 @@
         // =========================================================
         // وظائف التنقل وتحديث واجهة المستخدم
         // =========================================================
+
+         /**
+         * دالة لتبديل عرض قائمة الجوال المنسدلة (Hamburger Menu).
+         */
+        function toggleMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+            // لا حاجة لتغيير أيقونة الهمبرغر، لكن سنضيف فئة إن أردنا تغيير شكلها
+        }
+
 
         /**
          * تعرض الصفحة المطلوبة وتخفي جميع الصفحات الأخرى.
