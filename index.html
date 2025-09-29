@@ -48,6 +48,7 @@
             box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.5), 0 2px 4px -2px rgba(139, 92, 246, 0.5); 
             transition: all 0.3s ease;
             font-size: 0.875rem;
+            white-space: nowrap; /* منع انقسام نص الزر */
         }
         .gemini-btn:hover {
             background-color: rgb(124, 58, 237);
@@ -217,8 +218,8 @@
                 </div>
                 <span class="text-sm font-semibold px-3 py-1 bg-gray-100 dark:bg-gray-700" style="color: rgb(13, 148, 136);">Biotechnology</span>
             </div>
-
-            <div class="flex justify-between items-start mb-4">
+               <!-- التعديل 1: استخدام flex-col على الجوال لمنع خروج زر التلخيص من الشاشة -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-4 sm:space-y-0">
                 <h3 id="article1-full-title" class="text-3xl font-bold text-primary-theme">The Digital Future and AI Breakthroughs</h3>
                 <!-- زر تلخيص المقال باستخدام الذكاء الاصطناعي -->
                 <button onclick="summarizeArticle('article1')" id="article1-summarize-btn" class="gemini-btn flex items-center gap-2">
@@ -230,12 +231,12 @@
             <!-- محتوى المقال (مصدر لنموذج اللغة) -->
             <p id="content-article1" class="leading-relaxed text-lg text-gray-700 dark:text-gray-300">The world is witnessing an unprecedented shift towards comprehensive digitalization, where Artificial Intelligence has become not just a supporting tool, but a fundamental partner in decision-making and solving complex problems. This transformation is expected to accelerate in the coming years, reshaping the global job market and economy. Investing in digital infrastructure and skills related to data and machine learning is the key to success in this new era. <br><br> The integration of AI into daily life, from personalized recommendations to complex industrial automation, highlights a future where human-machine collaboration is essential. Ethical considerations and responsible development of these technologies must accompany this rapid growth to ensure equitable access and prevent unintended societal consequences.</p>
 
-            <!-- قسم البيانات الوصفية للمقال -->
-            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center text-gray-500 dark:text-gray-400 text-sm">
+            <!-- التعديل 2: استخدام flex-col على الجوال لقسم البيانات الوصفية -->
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-start sm:items-center text-gray-500 dark:text-gray-400 text-sm space-y-3 sm:space-y-0">
                 <div class="flex items-center space-x-4">
                     <span class="flex items-center space-x-1">
                         <i class="fas fa-user-circle"></i>
-                        <span>Dr. Jane Doe</span>
+                        <span>Dr.Jane Doe</span>
                     </span>
                     <span class="flex items-center space-x-1">
                         <i class="fas fa-clock"></i>
@@ -257,8 +258,8 @@
                 </div>
                 <span class="text-sm font-semibold px-3 py-1 bg-gray-100 dark:bg-gray-700" style="color: rgb(67, 20, 207);">Quantum Physics</span>
             </div>
-
-             <div class="flex justify-between items-start mb-4">
+                <!-- التعديل 1: استخدام flex-col على الجوال لمنع خروج زر التلخيص من الشاشة -->
+             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-4 sm:space-y-0">
                 <h3 id="article2-full-title" class="text-3xl font-bold text-primary-theme">Renewable Energy Revolution and Sustainability</h3>
                 <!-- زر تلخيص المقال باستخدام الذكاء الاصطناعي -->
                 <button onclick="summarizeArticle('article2')" id="article2-summarize-btn" class="gemini-btn flex items-center gap-2">
@@ -267,12 +268,12 @@
                 </button>
             </div>
             <p id="content-article2" class="leading-relaxed text-lg text-gray-700 dark:text-gray-300">Renewable energy sources, such as solar, wind, and hydropower, are the essential foundation for a sustainable and environmentally friendly future. The transition to clean energy is no longer an option but a pressing necessity to combat climate change and ensure energy security for future generations. Governments and companies worldwide are striving to accelerate the adoption of these technologies to reduce reliance on fossil fuels. <br><br> Innovation in battery storage and grid efficiency is key to overcoming the intermittency challenge associated with solar and wind power. Global cooperation on energy policy and technology transfer remains crucial for making a genuine impact on environmental protection.</p>
-            
-            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center text-gray-500 dark:text-gray-400 text-sm">
+            <!-- التعديل 2: استخدام flex-col على الجوال لقسم البيانات الوصفية -->
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-start sm:items-center text-gray-500 dark:text-gray-400 text-sm space-y-3 sm:space-y-0">
                 <div class="flex items-center space-x-4">
                     <span class="flex items-center space-x-1">
                         <i class="fas fa-user-circle"></i>
-                        <span>Prof. Michael Rodriguez</span>
+                        <span>Prof.Michael</span>
                     </span>
                     <span class="flex items-center space-x-1">
                         <i class="fas fa-clock"></i>
@@ -294,8 +295,8 @@
                 </div>
                 <span class="text-sm font-semibold px-3 py-1 bg-gray-100 dark:bg-gray-700" style="color: rgb(21, 128, 61);">Environmental Science</span>
             </div>
-
-            <div class="flex justify-between items-start mb-4">
+            <!-- التعديل 1: استخدام flex-col على الجوال لمنع خروج زر التلخيص من الشاشة -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-4 sm:space-y-0">
                 <h3 id="article3-full-title" class="text-3xl font-bold text-primary-theme">Principles of Design Creativity and UX</h3>
                 <!-- زر تلخيص المقال باستخدام الذكاء الاصطناعي -->
                 <button onclick="summarizeArticle('article3')" id="article3-summarize-btn" class="gemini-btn flex items-center gap-2">
@@ -304,8 +305,8 @@
                 </button>
             </div>
             <p id="content-article3" class="leading-relaxed text-lg text-gray-700 dark:text-gray-300">Effective creative design revolves around meeting user needs and expectations. User Experience (UX) is not just about aesthetics; it is an integrated journey aimed at making interaction easy, enjoyable, and beneficial. Adherence to the principles of simplicity, clarity, and consistency is what distinguishes successful digital products in today's competitive market. <br><br> Empathy mapping and user testing are fundamental steps in the design process, ensuring that the final product truly solves the user's problem. A great user interface (UI) combined with smooth UX creates memorable digital experiences that foster loyalty.</p>
-            
-            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center text-gray-500 dark:text-gray-400 text-sm">
+              <!-- التعديل 2: استخدام flex-col على الجوال لقسم البيانات الوصفية -->
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-start sm:items-center text-gray-500 dark:text-gray-400 text-sm space-y-3 sm:space-y-0">
                 <div class="flex items-center space-x-4">
                     <span class="flex items-center space-x-1">
                         <i class="fas fa-user-circle"></i>
@@ -402,6 +403,9 @@
         // الإعدادات والثوابت
         // =========================================================
         const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=';
+        // ***************************************************************
+        //  مهم جداً: يجب إدخال مفتاح Gemini API الخاص بك هنا
+        // ***************************************************************
         const API_KEY = "AIzaSyAup9WftbNExYO0EEpaE_wkNvED7Rwkr64";
         
         // النصوص الثابتة المستخدمة في التطبيق
@@ -462,15 +466,37 @@
 
             // تحديث أنماط زر التنقل النشط
             const isDark = document.documentElement.classList.contains('dark');
-            document.querySelectorAll('.nav-button').forEach(button => {
-                // إعادة ضبط الأنماط
-                button.classList.remove('border-b-2', 'border-primary-theme', 'text-primary-theme', 'font-semibold', 'dark:border-white', 'dark:text-white');
+
+            // 1. إعادة ضبط أنماط جميع الروابط (باستخدام data-page)
+            document.querySelectorAll('[data-page]').forEach(button => {
+                // إزالة أنماط التفعيل
+                button.classList.remove('text-primary-theme', 'border-b-2', 'font-semibold', 'dark:border-white', 'dark:text-white', 'bg-gray-100', 'dark:bg-gray-700');
+                
+                // إضافة أنماط الخمول
                 button.classList.add('text-gray-600', 'dark:text-gray-300', 'font-medium');
                 
-                // تعيين الأنماط النشطة
-                if (button.getAttribute('onclick').includes(pageId)) {
-                    button.classList.add('border-b-2', 'font-semibold', 'text-primary-theme');
-                    button.classList.remove('text-gray-600', 'font-medium');
+                // إزالة الحدود السفلية لروابط الجوال المنسدلة
+                if (button.classList.contains('mobile-nav-item')) {
+                    button.classList.remove('border-b-2');
+                }
+            });
+
+            // 2. تطبيق الأنماط النشطة على الروابط المطابقة لـ pageId
+            document.querySelectorAll(`[data-page="${pageId}"]`).forEach(button => {
+                // إضافة أنماط التفعيل الأساسية
+                button.classList.add('text-primary-theme', 'font-semibold');
+                button.classList.remove('text-gray-600', 'font-medium');
+                
+                // أنماط خاصة بالوضع الداكن/الفاتح والحدود
+                if (button.classList.contains('mobile-nav-item')) {
+                    // أنماط قائمة الجوال (خلفية)
+                    button.classList.add('bg-gray-100', 'dark:bg-gray-700');
+                    if (isDark) {
+                         button.classList.add('dark:text-white');
+                    }
+                } else {
+                    // أنماط سطح المكتب (حد سفلي)
+                    button.classList.add('border-b-2');
                     if (isDark) {
                          button.classList.add('dark:border-white', 'dark:text-white');
                     } else {
